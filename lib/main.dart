@@ -1,14 +1,20 @@
-import 'package:day1/day3_page.dart';
+import 'package:day1/ui/day3_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-main() => runApp(const MyApp());
+main() async {
+  await Hive.initFlutter();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Day3Page());
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false, home: HomePageTest());
   }
 }
 
@@ -55,20 +61,25 @@ class _HomePageTestState extends State<HomePageTest> {
                         color: Colors.white),
                     child: Column(
                       children: [
-                        Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text("자산",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                                Icon(Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFFB1B8C0), size: 16)
-                              ],
-                            )),
+                        GestureDetector(
+                            onTap: () {
+                              Get.to(()=>Day3Page());
+                            },
+                            child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    Text("자산",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Icon(Icons.arrow_forward_ios_rounded,
+                                        color: Color(0xFFB1B8C0), size: 16)
+                                  ],
+                                ))),
                         _accountItem(
                             iconName: "toss_icon_kb",
                             accountName: "KB국민은행",
@@ -84,7 +95,6 @@ class _HomePageTestState extends State<HomePageTest> {
                             accountName: "까까 사묵어야징~",
                             accountWon: "1,500"),
                         const Padding(padding: EdgeInsets.only(bottom: 16)),
-
                         const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Divider()),
@@ -92,7 +102,8 @@ class _HomePageTestState extends State<HomePageTest> {
                         _accountItem(
                             iconName: "toss_icon_wb",
                             accountName: "위비 포인트",
-                            accountWon: "20", isAccount: false),
+                            accountWon: "20",
+                            isAccount: false),
                         const Padding(padding: EdgeInsets.only(bottom: 16)),
                       ],
                     )))
@@ -146,24 +157,26 @@ class _HomePageTestState extends State<HomePageTest> {
                               fontSize: 16, fontWeight: FontWeight.bold))
                     ]),
               )),
-              isAccount ? ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: Material(
-                    color: const Color(0xFFF2F3F4),
-                    child: InkWell(
-                      onTap: () {
-                        print("후후 너희 몰래 송금을 하겠다 근데 지금 은행 점검시간이네;;");
-                      },
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Text("송금",
-                            style: TextStyle(
-                                color: Color(0xFF505967),
-                                fontWeight: FontWeight.w500)),
-                      ),
-                    ),
-                  )) : Container()
+              isAccount
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: Material(
+                        color: const Color(0xFFF2F3F4),
+                        child: InkWell(
+                          onTap: () {
+                            print("후후 너희 몰래 송금을 하겠다 근데 지금 은행 점검시간이네;;");
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text("송금",
+                                style: TextStyle(
+                                    color: Color(0xFF505967),
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                        ),
+                      ))
+                  : Container()
             ],
           ));
 }
